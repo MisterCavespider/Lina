@@ -1,13 +1,5 @@
 /**
- * LICENSE
  * 
- * *ahem*
- * One can do whatever they want with this code,
- * aslong as they meet the following terms:
- * 
- * 1. One must be able to prove at any time that they are alive.
- * 
- * That's it. Please don't give this to robots.
  */
 package nl.mistercavespider.lina;
 
@@ -16,9 +8,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Line;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  * A line string - multiple lines.
@@ -26,29 +16,26 @@ import java.util.logging.Logger;
  * 
  * @author MisterCavespider
  */
-public class LineString {
+public class LineString extends Node {
     
-    private HashMap<Integer,Vector3f> waypoints;
+    private final ArrayList<Vector3f> waypoints;
     
     private boolean connection;
-    private Node lineNode;
     
     private final Material mat;
     
     public LineString(Material mat) {
         this.mat = mat;
-        lineNode = new Node();
-        waypoints = new HashMap<Integer, Vector3f>();
+        waypoints = new ArrayList<Vector3f>();
     }
     
     /**
-     * Add a certain point.
+     * Adds the given point.
      *
-     * @param loc
      * @param point
      */
-    public void addPoint(int loc, Vector3f point) {
-        waypoints.put(loc, point);
+    public void addPoint(Vector3f point) {
+        waypoints.add(point);
         try {
             update();
         } catch (UnavailiblePointException ex) {
@@ -57,13 +44,25 @@ public class LineString {
     }
     
     /**
-     * Removes a certain point.
+     * Adds the given points.
+     * Loops through the Array and calls the
+     * other .addCall(Vector3f point).
      * 
-     * @param loc
+     * @param points
+     */
+    public void addPoint(Vector3f[] points) {
+        for (Vector3f point : points) {
+            addPoint(point);
+        }
+    }
+    
+    /**
+     * Removes the given point.
+     * 
      * @param point
      */
-    public void remPoint(int loc, Vector3f point) {
-        waypoints.put(loc, point);
+    public void remPoint(Vector3f point) {
+        waypoints.remove(point);
         try {
             update();
         } catch (UnavailiblePointException ex) {
@@ -74,36 +73,27 @@ public class LineString {
     /**
      * Don't call it regularly.
      * 
-     * It will be internally called.
+     * It will be internally called when needed.
      * 
      * @throws nl.mistercavespider.lina.UnavailiblePointException
      */
     protected void update() throws UnavailiblePointException {
-        int total = waypoints.size();
+        Vector3f[] points = (Vector3f[]) waypoints.toArray();
+        
+        int total = points.length;
         int counter = 0;
-        while(counter < total) {
-            Vector3f p1 = waypoints.get(counter);
-            Vector3f p2 = waypoints.get(counter + 1);
-            //Is it the last one? Should we connect?
-            if(counter == total -1 && connection && p2 == null){
-                p2 = waypoints.get(0);
-            } else if(p2 == null) {
-                //Is there nothing in this number?
-                //Throw an exception
-                throw new UnavailiblePointException();
-            }
+        while(counter<=total) {
+            //Get the starting point
+            Vector3f start = points[counter];
+            Vector3f end = points[counter + 1];
             
-            //Creates the lines
-            Line l = new Line(p1, p2);
-            Geometry g = new Geometry("Geometry in a LineString: " + counter, l);
-            g.setMaterial(mat);
+            //Draw a line
+            Line l = new Line(start, end);
+            Geometry geom = new Geometry("noname, in a LineString: { "+ counter +" }", l);
             
-            //In case 
+            //Attach the line to this, a Node
+            attachChild(geom);
             
-            //Attaches the lines to a node
-            lineNode.attachChild(g);
-            
-            //Add the counter
             counter++;
         }
     }
@@ -116,11 +106,6 @@ public class LineString {
         }
     }
     
-    public Node getAttach() {
-        return lineNode;
-    }
-    
-    
     
     public boolean isConnection() {
         return connection;
@@ -130,12 +115,12 @@ public class LineString {
         this.connection = connection;
     }
 
-    public Node getLineNode() {
-        return lineNode;
+    @Override
+    public String toString() {
+        String out = "(LineString) { " + "connection: " + connection + ", \n" +
+                    "waypoints: " + waypoints;
+        return out;
     }
-
-    public void setLineNode(Node lineNode) {
-        this.lineNode = lineNode;
-    }
+    
     
 }
