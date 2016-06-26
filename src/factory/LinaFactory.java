@@ -1,7 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * LICENSE
+ * 
+ * *ahem*.
+ * One can do whatever they want with this code,
+ * as long as they meet the following terms:
+ * 
+ * 1. One must be able to prove at any time that they are alive.
+ * 
+ * That's it. Please don't give this to robots.
  */
 package nl.mistercavespider.lina.factory;
 
