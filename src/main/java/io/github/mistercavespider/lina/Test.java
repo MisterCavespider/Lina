@@ -2,14 +2,20 @@ package io.github.mistercavespider.lina;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
+import com.jme3.math.FastMath;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Sphere;
+import com.jme3.system.AppSettings;
+
+import io.github.mistercavespider.lina.ctrl.TimeTracer;
 
 public class Test extends SimpleApplication {
 
 	public static void main(String[] args) {
 		Test t = new Test();
+		AppSettings sets = new AppSettings(true);
+		sets.setFrameRate(60);
+		t.setSettings(sets);
 		t.start();
 	}
 
@@ -18,48 +24,58 @@ public class Test extends SimpleApplication {
 	private LineArray arr;
 	private LineString str;
 	private Geometry lineString;
+	private Geometry g;
 	
 	@Override
 	public void simpleInitApp() {
 		flyCam.setMoveSpeed(45f);
-		
-		arr = new LineArray(8);
-		Geometry geom = new Geometry("LineArray", arr);
+//		
+//		arr = new LineArray(8);
+//		Geometry geom = new Geometry("LineArray", arr);
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setBoolean("VertexColor", true);
-		geom.setMaterial(mat);
-		//rootNode.attachChild(geom);
+//		geom.setMaterial(mat);
+//		rootNode.attachChild(geom);
+//		
+//		arr.setVertex(0, new Vector3f(0, 0, 0));
+//		arr.setVertex(1, new Vector3f(1, 1, 1));
+//		arr.setVertex(2, new Vector3f(2, 6, 4));
+//		arr.setVertex(3, new Vector3f(3, 12, 9));
+//		
+//		arr.setVertex(4, new Vector3f(4, 20, 16));
+//		arr.setVertex(5, new Vector3f(5, 30, 25));
+//		arr.setVertex(6, new Vector3f(6, 42, 36));
+//		arr.setVertex(7, new Vector3f(7, 56, 49));
+//		
+//		System.out.println();
+//		
+//		str = new LineString(64);
+//		lineString = new Geometry("LineString", str);
+//		lineString.setMaterial(mat.clone());
+//		rootNode.attachChild(lineString);
+//		
+//		str.addPoint(Vector3f.ZERO, ColorRGBA.Red);
+//		str.addPoint(Vector3f.UNIT_X, ColorRGBA.Red);
+//		str.addPoint(Vector3f.UNIT_XYZ, ColorRGBA.Red);
 		
-		arr.setVertex(0, new Vector3f(0, 0, 0));
-		arr.setVertex(1, new Vector3f(1, 1, 1));
-		arr.setVertex(2, new Vector3f(2, 6, 4));
-		arr.setVertex(3, new Vector3f(3, 12, 9));
+		g = new Geometry("g", new Sphere(8, 8, .5f));
+		g.setMaterial(mat.clone());
+		rootNode.attachChild(g);
 		
-		arr.setVertex(4, new Vector3f(4, 20, 16));
-		arr.setVertex(5, new Vector3f(5, 30, 25));
-		arr.setVertex(6, new Vector3f(6, 42, 36));
-		arr.setVertex(7, new Vector3f(7, 56, 49));
+		g.addControl(new TimeTracer(mat.clone(), 64, 64));
 		
-		System.out.println();
-		
-		str = new LineString(64);
-		lineString = new Geometry("LineString", str);
-		lineString.setMaterial(mat.clone());
-		rootNode.attachChild(lineString);
-		
-		str.addPoint(Vector3f.ZERO, ColorRGBA.Red);
-		str.addPoint(Vector3f.UNIT_X, ColorRGBA.Red);
-		str.addPoint(Vector3f.UNIT_XYZ, ColorRGBA.Red);
 	}
 
 	@Override
 	public void simpleUpdate(float tpf) {
-		time += tpf;
+//		time += tpf;
+//		
+//		if(System.currentTimeMillis() - last > 50) {
+//			last = System.currentTimeMillis();
+//			str.addPoint(new Vector3f(time, time*time, 1), ColorRGBA.Red);
+//			lineString.updateModelBound();
+//		}
 		
-		if(System.currentTimeMillis() - last > 50) {
-			last = System.currentTimeMillis();
-			str.addPoint(new Vector3f(time, time*time, 1), ColorRGBA.Red);
-			lineString.updateModelBound();
-		}
+		g.move(FastMath.nextRandomFloat()*tpf, 1f*tpf, FastMath.nextRandomFloat()*tpf);
 	}
 }

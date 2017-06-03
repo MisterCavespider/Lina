@@ -25,12 +25,12 @@ public class LineString extends Mesh implements Lina {
 	
 	public LineString addPoint(Vector3f vertex, ColorRGBA color) {
 		vertices.add(vertex);
-		while(vertices.size() > maxSize) {
+		while(maxSize > 0 && vertices.size() > maxSize) {
 			vertices.removeFirst();
 		}
 		
 		colors.add(color);
-		while(colors.size() > maxSize) {
+		while(maxSize > 0 && colors.size() > maxSize) {
 			colors.removeFirst();
 		}
 		
