@@ -1,6 +1,7 @@
 package io.github.mistercavespider.lina;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.material.Material;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Geometry;
@@ -29,10 +30,14 @@ public class Test extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		flyCam.setMoveSpeed(45f);
+		
+		stateManager.attach(new ScreenshotAppState("image/"));
+		
 //		
 //		arr = new LineArray(8);
 //		Geometry geom = new Geometry("LineArray", arr);
 		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setTransparent(true);
 		mat.setBoolean("VertexColor", true);
 //		geom.setMaterial(mat);
 //		rootNode.attachChild(geom);
@@ -68,7 +73,7 @@ public class Test extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf) {
-//		time += tpf;
+		time += tpf;
 //		
 //		if(System.currentTimeMillis() - last > 50) {
 //			last = System.currentTimeMillis();
@@ -76,6 +81,6 @@ public class Test extends SimpleApplication {
 //			lineString.updateModelBound();
 //		}
 		
-		g.move(FastMath.nextRandomFloat()*tpf, 1f*tpf, FastMath.nextRandomFloat()*tpf);
+		g.setLocalTranslation( FastMath.cos( time*10 ), g.getLocalTranslation().y + tpf, FastMath.sin( time*10 ) );
 	}
 }

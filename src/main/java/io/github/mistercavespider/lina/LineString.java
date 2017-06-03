@@ -9,29 +9,32 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.util.BufferUtils;
 
+import io.github.mistercavespider.lina.ctrl.color.ColorController;
+import io.github.mistercavespider.lina.ctrl.color.GradientColorController;
+
 public class LineString extends Mesh implements Lina {
 
 	protected int maxSize;
 	
 	protected LinkedList<Vector3f> vertices = new LinkedList<>();
-	protected LinkedList<ColorRGBA> colors = new LinkedList<ColorRGBA>();
+	
+	protected ColorController colorController;
 	
 	public LineString(int maxSize) {
 		this.maxSize = maxSize;
+		colorController = new GradientColorController();
+		colorController.setBaseColor(ColorRGBA.randomColor());
+		colorController.setMaxSize(64);
+		((GradientColorController)colorController).setEndColor(ColorRGBA.randomColor());
 		
 		setAllBuffers();
 		setMode(Mode.Lines);
 	}
 	
-	public LineString addPoint(Vector3f vertex, ColorRGBA color) {
+	public LineString addPoint(Vector3f vertex) {
 		vertices.add(vertex);
 		while(maxSize > 0 && vertices.size() > maxSize) {
 			vertices.removeFirst();
-		}
-		
-		colors.add(color);
-		while(maxSize > 0 && colors.size() > maxSize) {
-			colors.removeFirst();
 		}
 		
 		setAllBuffers();
@@ -85,11 +88,29 @@ public class LineString extends Mesh implements Lina {
 
 	@Override
 	public void setColorBuffer() {
-		ColorRGBA[] arrcolors = new ColorRGBA[colors.size()];
-		colors.toArray(arrcolors);
+		ColorRGBA[] arrcolors = new ColorRGBA[vertices.size()];
+		
+		for (int i = 0; i < arrcolors.length; i++) {
+			arrcolors[i] = colorController.getColor(i);
+		}
 		
 		System.out.println(Arrays.toString(arrcolors));
 		setBuffer(Type.Color, 4, BufferUtils.createFloatBuffer(arrcolors));
 	}
 
+	public int getMaxSize() {
+		return maxSize;
+	}
+
+	public void setMaxSize(int maxSize) {
+		this.maxSize = maxSize;
+	}
+
+	public LinkedList<Vector3f> getVertices() {
+		return vertices;
+	}
+
+	public void setVertices(LinkedList<Vector3f> vertices) {
+		this.vertices = vertices;
+	}
 }
