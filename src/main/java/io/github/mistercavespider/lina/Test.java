@@ -67,7 +67,7 @@ public class Test extends SimpleApplication {
 		g.setMaterial(mat.clone());
 		rootNode.attachChild(g);
 		
-		g.addControl(new TimeTracer(mat.clone(), 64, 64));
+		g.addControl(new TimeTracer(mat.clone(), 200, 64));
 		
 	}
 

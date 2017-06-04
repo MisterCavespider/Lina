@@ -1,4 +1,4 @@
-package io.github.mistercavespider.lina.ctrl.color;
+package io.github.mistercavespider.lina.color;
 
 import com.jme3.math.ColorRGBA;
 

@@ -9,8 +9,8 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.util.BufferUtils;
 
-import io.github.mistercavespider.lina.ctrl.color.ColorController;
-import io.github.mistercavespider.lina.ctrl.color.GradientColorController;
+import io.github.mistercavespider.lina.color.ColorController;
+import io.github.mistercavespider.lina.color.GradientColorController;
 
 public class LineString extends Mesh implements Lina {
 
@@ -25,7 +25,7 @@ public class LineString extends Mesh implements Lina {
 		colorController = new GradientColorController();
 		colorController.setBaseColor(ColorRGBA.randomColor());
 		colorController.setMaxSize(64);
-		((GradientColorController)colorController).setEndColor(ColorRGBA.randomColor());
+		((GradientColorController)colorController).setSecondaryColor(ColorRGBA.randomColor());
 		
 		setAllBuffers();
 		setMode(Mode.Lines);

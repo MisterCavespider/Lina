@@ -1,7 +1,10 @@
 package io.github.mistercavespider.lina.ctrl;
 
+import java.util.LinkedList;
+
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
@@ -10,7 +13,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
 import io.github.mistercavespider.lina.LineString;
-import io.github.mistercavespider.lina.ctrl.color.ColorController;
 
 public class TimeTracer extends AbstractControl {
 
@@ -21,8 +23,6 @@ public class TimeTracer extends AbstractControl {
 	protected LineString str;
 	protected Geometry strGeom;
 	
-	protected ColorController colors;
-	
 	public TimeTracer(Material mat) {
 		this(mat, 500, 64);
 	}
@@ -32,7 +32,7 @@ public class TimeTracer extends AbstractControl {
 	}
 	
 	public TimeTracer(Material mat, int maxSize) {
-		this(mat, 500, maxSize);
+		this(mat, 200, maxSize);
 	}
 	
 	/**
@@ -73,6 +73,12 @@ public class TimeTracer extends AbstractControl {
 
 	@Override
 	protected void controlUpdate(float tpf) {
+		LinkedList<Vector3f> vertices = str.getVertices();
+		if(vertices.size() > 1) {
+			vertices.set(vertices.size()-1, getSpatial().getLocalTranslation().clone());
+			str.setAllBuffers();
+		}
+		
 		if(System.currentTimeMillis() - last > updateTime) {
 			str.addPoint(getSpatial().getLocalTranslation().clone());
 			strGeom.updateModelBound();
