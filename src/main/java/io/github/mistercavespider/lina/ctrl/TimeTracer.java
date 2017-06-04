@@ -14,7 +14,13 @@ import com.jme3.scene.control.AbstractControl;
 
 import io.github.mistercavespider.lina.LineString;
 
-public class TimeTracer extends AbstractControl {
+/**
+ * Traces the Spatial. Updates the position based on time.
+ * 
+ * @author MisterCavespider
+ *
+ */
+public class TimeTracer extends AbstractControl implements Tracer {
 
 	private long last = 0;
 	private long updateTime = 10;
@@ -23,14 +29,30 @@ public class TimeTracer extends AbstractControl {
 	protected LineString str;
 	protected Geometry strGeom;
 	
+	/**
+	 * Simplest constructor. Assumes an updateTime of 200,
+	 * and a maxSize of 64.
+	 * 
+	 * @param mat	Material applied to LineString
+	 */
 	public TimeTracer(Material mat) {
 		this(mat, 500, 64);
 	}
 	
+	/**
+	 * Constructor. Assumes a maxSize of 64.
+	 * @param mat			Material applied to LineString
+	 * @param updateTime	The amount of time to wait before updating
+	 */
 	public TimeTracer(Material mat, long updateTime) {
 		this(mat, updateTime, 64);
 	}
 	
+	/**
+	 * Constructor. Assumes an updateTime of 200.
+	 * @param mat		Material applied to LineString
+	 * @param maxSize	The maximum size to use for the LineString
+	 */
 	public TimeTracer(Material mat, int maxSize) {
 		this(mat, 200, maxSize);
 	}
@@ -88,4 +110,24 @@ public class TimeTracer extends AbstractControl {
 
 	@Override
 	protected void controlRender(RenderManager rm, ViewPort vp) {}
+
+	@Override
+	public Material getMaterial() {
+		return mat;
+	}
+
+	@Override
+	public void setMaterial(Material mat) {
+		this.mat = mat;
+	}
+
+	@Override
+	public LineString getLineString() {
+		return str;
+	}
+
+	@Override
+	public void setLineString(LineString str) {
+		this.str = str;
+	}
 }

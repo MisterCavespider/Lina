@@ -4,6 +4,12 @@ import com.jme3.material.Material;
 
 import io.github.mistercavespider.lina.LineString;
 
+/**
+ * Basic interface for tracers.
+ * 
+ * @author MisterCavespider
+ *
+ */
 public interface Tracer {
 
 	public Material getMaterial();

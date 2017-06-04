@@ -1,15 +1,4 @@
 package io.github.mistercavespider.lina.old;
-/**
- * LICENSE
- * 
- * *ahem*
- * One can do whatever they want with this code,
- * aslong as they meet the following terms:
- * 
- * 1. One must be able to prove at any time that they are alive.
- * 
- * That's it. Please don't give this to robots.
- */
 
 /**
  * Only used if the point isn't a point.
@@ -19,7 +8,8 @@ package io.github.mistercavespider.lina.old;
  *
  * @author MisterCavespider
  */
-public class UnavailiblePointException extends Exception{
+@Deprecated
+public class UnavailiblePointException extends Exception {
     
     
     

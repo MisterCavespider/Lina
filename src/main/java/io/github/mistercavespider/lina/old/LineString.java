@@ -1,24 +1,12 @@
 package io.github.mistercavespider.lina.old;
-/**
- * LICENSE
- * 
- * *ahem*
- * One can do whatever they want with this code,
- * aslong as they meet the following terms:
- * 
- * 1. One must be able to prove at any time that they are alive.
- * 
- * That's it. Please don't give this to robots.
- */
+
+import java.util.HashMap;
 
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Line;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A line string - multiple lines.
@@ -26,6 +14,7 @@ import java.util.logging.Logger;
  * 
  * @author MisterCavespider
  */
+@Deprecated
 public class LineString {
     
     private HashMap<Integer,Vector3f> waypoints;

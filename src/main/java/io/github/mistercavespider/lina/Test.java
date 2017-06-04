@@ -10,6 +10,14 @@ import com.jme3.system.AppSettings;
 
 import io.github.mistercavespider.lina.ctrl.TimeTracer;
 
+/**
+ * Test temporary class.
+ * 
+ * DO NOT USE
+ * 
+ * @author MisterCavespider
+ *
+ */
 public class Test extends SimpleApplication {
 
 	public static void main(String[] args) {

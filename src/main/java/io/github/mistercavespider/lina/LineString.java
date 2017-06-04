@@ -12,6 +12,12 @@ import com.jme3.util.BufferUtils;
 import io.github.mistercavespider.lina.color.ColorController;
 import io.github.mistercavespider.lina.color.GradientColorController;
 
+/**
+ * A string of lines. Has a variable length.
+ * 
+ * @author MisterCavespider
+ *
+ */
 public class LineString extends Mesh implements Lina {
 
 	protected int maxSize;
@@ -20,17 +26,28 @@ public class LineString extends Mesh implements Lina {
 	
 	protected ColorController colorController;
 	
+	/**
+	 * Temporary default construct.
+	 * @param maxSize	The maximum size of the lists.
+	 */
 	public LineString(int maxSize) {
 		this.maxSize = maxSize;
 		colorController = new GradientColorController();
-		colorController.setBaseColor(ColorRGBA.randomColor());
+		colorController.setBaseColor(ColorRGBA.Red);
 		colorController.setMaxSize(64);
-		((GradientColorController)colorController).setSecondaryColor(ColorRGBA.randomColor());
+		((GradientColorController)colorController).setSecondaryColor(ColorRGBA.White);
 		
 		setAllBuffers();
 		setMode(Mode.Lines);
 	}
 	
+	/**
+	 * Adds a point to the list.
+	 * Also updates the buffers.
+	 * 
+	 * @param vertex	The point
+	 * @return
+	 */
 	public LineString addPoint(Vector3f vertex) {
 		vertices.add(vertex);
 		while(maxSize > 0 && vertices.size() > maxSize) {
@@ -98,19 +115,30 @@ public class LineString extends Mesh implements Lina {
 		setBuffer(Type.Color, 4, BufferUtils.createFloatBuffer(arrcolors));
 	}
 
+	/**
+	 * Gets the maximum size of the string.
+	 * @return	The maximum size of the string
+	 */
 	public int getMaxSize() {
 		return maxSize;
 	}
 
+	/**
+	 * Sets the maximum size of the string.
+	 * @param maxSize	The maximum size of the string
+	 */
 	public void setMaxSize(int maxSize) {
 		this.maxSize = maxSize;
 	}
 
+	/**
+	 * Gets the list of vertices. This method
+	 * will probably be removed, as it is very
+	 * unsafe.
+	 * 
+	 * @return The actual list of vertices used (no copy).
+	 */
 	public LinkedList<Vector3f> getVertices() {
 		return vertices;
-	}
-
-	public void setVertices(LinkedList<Vector3f> vertices) {
-		this.vertices = vertices;
 	}
 }
