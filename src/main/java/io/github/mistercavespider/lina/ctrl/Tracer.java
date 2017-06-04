@@ -7,7 +7,7 @@ import io.github.mistercavespider.lina.LineString;
 public interface Tracer {
 
 	public Material getMaterial();
-	public void setMaterial();
+	public void setMaterial(Material mat);
 	
 	public LineString getLineString();
 	public void setLineString(LineString str);
