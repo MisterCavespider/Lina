@@ -15,12 +15,6 @@ public interface ColorController {
 	 * @param baseColor	The primary color to use.
 	 */
 	public void setBaseColor(ColorRGBA baseColor);
-	/**
-	 * Sets the maximum size of the buffer. This data
-	 * is useful to know when making e.g. gradients.
-	 * @param maxSize
-	 */
-	public void setMaxSize(int maxSize);
 	
 	/**
 	 * Requests a color based on several arguments.

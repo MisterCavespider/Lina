@@ -65,7 +65,6 @@ public class LineString extends Mesh implements Lina {
 		if(this.colorController == null) {
 			this.colorController = new GradientColorController();
 			this.colorController.setBaseColor(ColorRGBA.Red);
-			this.colorController.setMaxSize(64);
 			((GradientColorController)this.colorController).setSecondaryColor(ColorRGBA.White);
 		}
 		
@@ -113,6 +112,8 @@ public class LineString extends Mesh implements Lina {
 
 	@Override
 	public void setIndexBuffer() {
+		if(vertices.isEmpty()) return;
+		
 		int size = vertices.size();
 		int[] indices;
 		
@@ -147,6 +148,8 @@ public class LineString extends Mesh implements Lina {
 
 	@Override
 	public void setVertexBuffer() {
+		if(vertices.isEmpty()) return;
+		
 		Vector3f[] arrvertices = new Vector3f[vertices.size()];
 		vertices.toArray(arrvertices);
 		setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(arrvertices));
@@ -154,10 +157,18 @@ public class LineString extends Mesh implements Lina {
 
 	@Override
 	public void setColorBuffer() {
+		if(vertices.isEmpty()) return;
+		
 		ColorRGBA[] colors = new ColorRGBA[vertices.size()];
-		for (int i = 0; i < colors.length; i++) {
-			colors[i] = colorController.getColor(i);
+		
+		if(vertices.size() == 1) {
+			colors[0] = colorController.getColor(1f);
+		} else {
+			for (int i = 0; i < colors.length; i++) {
+				colors[i] = colorController.getColor(i/(vertices.size()-1f));
+			}
 		}
+		
 		setBuffer(Type.Color, 4, BufferUtils.createFloatBuffer(colors));
 	}
 

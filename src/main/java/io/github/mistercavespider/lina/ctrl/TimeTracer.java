@@ -10,6 +10,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
 import io.github.mistercavespider.lina.LineString;
+import io.github.mistercavespider.lina.color.ColorController;
 
 /**
  * Traces the Spatial.
@@ -28,18 +29,18 @@ public class TimeTracer extends AbstractControl implements Tracer {
 	protected Geometry strGeom;
 	
 	/**
-	 * Simplest constructor. Assumes an updateTime of 200,
+	 * Simplest constructor allowed. Assumes an updateTime of 200,
 	 * and a maxSize of 64.
 	 * 
-	 * @param mat	Material applied to LineString
+	 * @param mat	Material applied to {@link LineString}
 	 */
 	public TimeTracer(Material mat) {
 		this(mat, 500, 64);
 	}
 	
 	/**
-	 * Constructor. Assumes a maxSize of 64.
-	 * @param mat			Material applied to LineString
+	 * Assumes a maxSize of 64.
+	 * @param mat			Material applied to {@link LineString}
 	 * @param updateTime	The amount of time to wait before updating
 	 */
 	public TimeTracer(Material mat, long updateTime) {
@@ -47,32 +48,44 @@ public class TimeTracer extends AbstractControl implements Tracer {
 	}
 	
 	/**
-	 * Constructor. Assumes an updateTime of 200.
-	 * @param mat		Material applied to LineString
-	 * @param maxSize	The maximum size to use for the LineString
+	 * Assumes an updateTime of 200.
+	 * @param mat		Material applied to {@link LineString}
+	 * @param maxSize	The maximum size to use for the {@link LineString}
 	 */
 	public TimeTracer(Material mat, int maxSize) {
 		this(mat, 200, maxSize);
 	}
 	
 	/**
-	 * Default constructor.
 	 * Constructs LineString on its own.
-	 * @param mat			Material applied to LineString
+	 * @param mat			Material applied to {@link LineString}
 	 * @param updateTime	The amount of time to wait before updating
-	 * @param maxSize		The maximum size to use for the LineString
+	 * @param maxSize		The maximum size to use for the {@link LineString}
 	 */
 	public TimeTracer(Material mat, long updateTime, int maxSize) {
 		this(mat, updateTime, new LineString(maxSize));
 	}
 	
 	/**
-	 * Default (full) constructor.
-	 * @param mat			Material applied to LineString
+	 * Default constructor.
+	 * Constructs LineString on its own.
+	 * 
+	 * @param mat			Material applied to {@link LineString}
 	 * @param updateTime	The amount of time to wait before updating
-	 * @param str			The LineString
+	 * @param maxSize		The maximum size to use for the {@link LineString}
+	 * @param cc			The {@link ColorController} used be the {@link LineString}
 	 */
-	public TimeTracer(Material mat,long updateTime, LineString str ) {
+	public TimeTracer(Material mat, long updateTime, int maxSize, ColorController cc) {
+		this(mat, updateTime, new LineString(maxSize, cc));
+	}
+	
+	/**
+	 * Default (full) constructor.
+	 * @param mat			Material applied to {@link LineString}
+	 * @param updateTime	The amount of time to wait before updating
+	 * @param str			The {@link LineString}
+	 */
+	public TimeTracer(Material mat, long updateTime, LineString str) {
 		this.mat = mat;
 		this.updateTime = updateTime;
 		this.str = str;

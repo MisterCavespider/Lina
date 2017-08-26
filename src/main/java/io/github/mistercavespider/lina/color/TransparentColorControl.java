@@ -12,18 +12,18 @@ import com.jme3.math.ColorRGBA;
 public class TransparentColorControl extends SingleColorController {
 
 	/**
-	 * Takes the index of the vertex as argument.
-	 * Must be an integer.
+	 * Takes a relative position as only argument.
+	 * Must be a float between 0.0 and 1.0.
 	 * 
 	 * Outputs the baseColor with a certain transparency.
-	 * The transparency is calculated using index/(maxSize-1).
+	 * The transparency is equal to the first argument.
 	 * 
 	 * <HR>
 	 * 
 	 * {@inheritDoc}
 	 */
 	public ColorRGBA getColor(Object... args) {
-		return baseColor.mult( new ColorRGBA(1, 1, 1, ((Integer)args[0]).floatValue()/((float)maxSize-1f) ));
+		return baseColor.mult( new ColorRGBA(1, 1, 1, (Float)args[0] ));
 	}
 	
 }

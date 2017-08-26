@@ -14,18 +14,15 @@ public class GradientColorController extends DoubleColorController {
 	
 	
 	/**
-	 * Takes the index of the vertex as argument.
-	 * Must be an integer.
+	 * Takes a relative position as only argument.
+	 * Must be a float between 0.0 and 1.0.
 	 * 
 	 * <HR>
 	 * 
 	 * {@inheritDoc}
 	 */
 	public ColorRGBA getColor(Object... args) {
-		int index = (Integer) args[0];
-		
-		float scalar = ((float)index)/((float)maxSize);
-		
+		float scalar = (Float) args[0];
 		return baseColor.mult(scalar).add(secondaryColor.mult(1-scalar));
 	}
 

@@ -3,11 +3,13 @@ package io.github.mistercavespider.lina;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.ScreenshotAppState;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.system.AppSettings;
 
+import io.github.mistercavespider.lina.color.TransparentColorControl;
 import io.github.mistercavespider.lina.ctrl.TimeTracer;
 
 /**
@@ -75,7 +77,10 @@ public class Test extends SimpleApplication {
 		g.setMaterial(mat.clone());
 		rootNode.attachChild(g);
 		
-		g.addControl(new TimeTracer(mat.clone(), 200, 64));
+		TransparentColorControl tcc = new TransparentColorControl();
+		tcc.setBaseColor(ColorRGBA.Green);
+		
+		g.addControl(new TimeTracer(mat.clone(), 10, 64, tcc));
 		
 	}
 
