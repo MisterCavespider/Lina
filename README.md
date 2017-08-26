@@ -3,6 +3,11 @@ This is is a library for jMonkeyEngine3.
 It adds support for different kind of lines,
 which make it easy to trace objects.
 
+## How to compile your own
+1. Download or Clone the repository
+2. Use `gradle build` in the root directory
+3. Get the jar from /build/libs/Lina.jar
+
 ## Short how-to-use
 Here is a small code sample:
 ``` Java
