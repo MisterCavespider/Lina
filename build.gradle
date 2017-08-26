@@ -1,8 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'application'
 apply plugin: 'eclipse'
-
-mainClassName = "io.github.mistercavespider.lina.Test"
 
 repositories {
     jcenter()
@@ -14,12 +11,4 @@ dependencies {
     compile "org.jmonkeyengine:jme3-core:$jmeVersion"
     compile "org.jmonkeyengine:jme3-desktop:$jmeVersion"
     compile "org.jmonkeyengine:jme3-lwjgl:$jmeVersion"
-}
-
-jar {
-  	manifest {
-    	attributes(
-      		'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-    	)
- 	}
 }
