@@ -6,10 +6,12 @@ import io.github.mistercavespider.lina.LineString;
 
 /**
  * Under development.
+ * Marked as deprecated because of it.
  * 
  * @author MisterCavespider
  *
  */
+@Deprecated
 public class DistanceTracer implements Tracer {
 
 	private Material mat;

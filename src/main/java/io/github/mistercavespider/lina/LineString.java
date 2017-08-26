@@ -1,7 +1,7 @@
 package io.github.mistercavespider.lina;
 
-import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -27,35 +27,81 @@ public class LineString extends Mesh implements Lina {
 	protected ColorController colorController;
 	
 	/**
-	 * Temporary default construct.
+	 * Assumes a maxSize of 64 and
+	 * a colorController of null.
+	 * 
+	 * @see LineString#LineString(int, ColorController)
+	 */
+	public LineString() {
+		this(64, null);
+	}
+	
+	/**
+	 * Assumes a colorController of null.
 	 * @param maxSize	The maximum size of the lists.
 	 */
 	public LineString(int maxSize) {
+		this(maxSize, null);
+	}
+	
+	/**
+	 * Full constructor.<br>
+	 * The size maxSize is the maximum size
+	 * the buffers can have.
+	 * Do note that this does <b>not</b> mean
+	 * the buffers (in the form of lists)
+	 * start with that size, but that they
+	 * can never get larger than it.<br>
+	 * The colorController dictates what
+	 * the colors look like.
+	 * @see ColorController
+	 * 
+	 * @param maxSize
+	 * @param colorController
+	 */
+	public LineString(int maxSize, ColorController colorController) {
 		this.maxSize = maxSize;
-		colorController = new GradientColorController();
-		colorController.setBaseColor(ColorRGBA.Red);
-		colorController.setMaxSize(64);
-		((GradientColorController)colorController).setSecondaryColor(ColorRGBA.White);
+		this.colorController = colorController;
+		if(this.colorController == null) {
+			this.colorController = new GradientColorController();
+			this.colorController.setBaseColor(ColorRGBA.Red);
+			this.colorController.setMaxSize(64);
+			((GradientColorController)this.colorController).setSecondaryColor(ColorRGBA.White);
+		}
 		
 		setAllBuffers();
 		setMode(Mode.Lines);
 	}
-	
+
 	/**
-	 * Adds a point to the list.
-	 * Also updates the buffers.
+	 * Adds a point (location) to the string.
+	 * Also rewrites all buffers.
 	 * 
-	 * @param vertex	The point
-	 * @return
+	 * @param vertex	The point (location)
+	 * @return this
 	 */
 	public LineString addPoint(Vector3f vertex) {
 		vertices.add(vertex);
-		while(maxSize > 0 && vertices.size() > maxSize) {
-			vertices.removeFirst();
-		}
+		cutInSize();
 		
 		setAllBuffers();
 		return this;
+	}
+	
+	public LineString addPoints(Vector3f... vertex_arr) {
+		for(Vector3f v : vertex_arr) {
+			vertices.add(v);
+		}
+		cutInSize();
+		
+		setAllBuffers();
+		return this;
+	}
+	
+	private void cutInSize() {
+		while(maxSize > 0 && vertices.size() > maxSize) {
+			vertices.removeFirst();
+		}
 	}
 	
 	@Override
@@ -68,14 +114,21 @@ public class LineString extends Mesh implements Lina {
 	@Override
 	public void setIndexBuffer() {
 		int size = vertices.size();
-		
 		int[] indices;
 		
-		if(size < 1) {
+		if(size < 1) {	// 0 or negative
 			return;
-		} else if (size == 1) {
+		} else if (size == 1) {	// 1
+			/*
+			 * This is not necessary
+			 * The indices {0,0}
+			 * will not show,
+			 * and the buffer might as
+			 * well not be sent, like
+			 * with size < 1
+			 */
 			indices = new int[] {0,0};
-		} else {
+		} else {	// 2 or more
 			indices = new int[size*2-2];
 			int i = 0;
 			
@@ -90,8 +143,6 @@ public class LineString extends Mesh implements Lina {
 		}
 		
 		setBuffer(Type.Index, 2, indices);
-		
-		System.out.println(Arrays.toString(indices));
 	}
 
 	@Override
@@ -99,20 +150,15 @@ public class LineString extends Mesh implements Lina {
 		Vector3f[] arrvertices = new Vector3f[vertices.size()];
 		vertices.toArray(arrvertices);
 		setBuffer(Type.Position, 3, BufferUtils.createFloatBuffer(arrvertices));
-		
-		System.out.println(Arrays.toString(arrvertices));
 	}
 
 	@Override
 	public void setColorBuffer() {
-		ColorRGBA[] arrcolors = new ColorRGBA[vertices.size()];
-		
-		for (int i = 0; i < arrcolors.length; i++) {
-			arrcolors[i] = colorController.getColor(i);
+		ColorRGBA[] colors = new ColorRGBA[vertices.size()];
+		for (int i = 0; i < colors.length; i++) {
+			colors[i] = colorController.getColor(i);
 		}
-		
-		System.out.println(Arrays.toString(arrcolors));
-		setBuffer(Type.Color, 4, BufferUtils.createFloatBuffer(arrcolors));
+		setBuffer(Type.Color, 4, BufferUtils.createFloatBuffer(colors));
 	}
 
 	/**
@@ -130,15 +176,37 @@ public class LineString extends Mesh implements Lina {
 	public void setMaxSize(int maxSize) {
 		this.maxSize = maxSize;
 	}
-
+	
 	/**
-	 * Gets the list of vertices. This method
-	 * will probably be removed, as it is very
-	 * unsafe.
+	 * Directly calls {@link List#set(int, Object)}.
+	 * Also checks if the list is empty.
+	 * Does not update buffers.
 	 * 
-	 * @return The actual list of vertices used (no copy).
+	 * @param index	index in the list
+	 * @param v		the vertex that is put in the list
 	 */
-	public LinkedList<Vector3f> getVertices() {
-		return vertices;
+	public void setVertex(int index, Vector3f v) {
+		if(vertices.isEmpty()) return;
+		this.vertices.set(index, v);
+	}
+	
+	/**
+	 * Directly calls {@link List#set(int, Object)}
+	 * with index = 0
+	 * 
+	 * @param v		the vertex that is put in the list
+	 */
+	public void setFirstVertex(Vector3f v) {
+		setVertex(0, v);
+	}
+	
+	/**
+	 * Directly calls {@link List#set(int, Object)}
+	 * with index = {@link List#size() size} - 1
+	 * 
+	 * @param v		the vertex that is put in the list
+	 */
+	public void setLastVertex(Vector3f v) {
+		setVertex(vertices.size() -1, v);
 	}
 }

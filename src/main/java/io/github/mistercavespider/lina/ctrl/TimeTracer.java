@@ -1,10 +1,7 @@
 package io.github.mistercavespider.lina.ctrl;
 
-import java.util.LinkedList;
-
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
@@ -15,7 +12,8 @@ import com.jme3.scene.control.AbstractControl;
 import io.github.mistercavespider.lina.LineString;
 
 /**
- * Traces the Spatial. Updates the position based on time.
+ * Traces the Spatial.
+ * Updates after <code>updateTime</code> has passed.
  * 
  * @author MisterCavespider
  *
@@ -84,7 +82,7 @@ public class TimeTracer extends AbstractControl implements Tracer {
 	public void setSpatial(Spatial spatial) {
 		super.setSpatial(spatial);
 		
-		//This seems like a dodgy way to do this
+		// This seems like a smart way to do this
 		
 		strGeom = new Geometry("LineString@"+spatial.getName(), str);
 		strGeom.setMaterial(mat);
@@ -95,11 +93,8 @@ public class TimeTracer extends AbstractControl implements Tracer {
 
 	@Override
 	protected void controlUpdate(float tpf) {
-		LinkedList<Vector3f> vertices = str.getVertices();
-		if(vertices.size() > 1) {
-			vertices.set(vertices.size()-1, getSpatial().getLocalTranslation().clone());
-			str.setAllBuffers();
-		}
+		str.setLastVertex(getSpatial().getLocalTranslation().clone());
+		str.setAllBuffers();
 		
 		if(System.currentTimeMillis() - last > updateTime) {
 			str.addPoint(getSpatial().getLocalTranslation().clone());
@@ -110,6 +105,14 @@ public class TimeTracer extends AbstractControl implements Tracer {
 
 	@Override
 	protected void controlRender(RenderManager rm, ViewPort vp) {}
+	
+	public long getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(long updateTime) {
+		this.updateTime = updateTime;
+	}
 
 	@Override
 	public Material getMaterial() {
