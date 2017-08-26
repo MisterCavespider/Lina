@@ -16,3 +16,7 @@ g.addControl(tt);
 
 rootNode.attach(g);
 ```
+
+-----
+
+All files in this repository are licensed under MIT, even if no header is given.
