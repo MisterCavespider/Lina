@@ -95,6 +95,11 @@ public class TimeTracer extends AbstractControl implements Tracer {
 	public void setSpatial(Spatial spatial) {
 		super.setSpatial(spatial);
 		
+		if(spatial == null) {
+			strGeom.removeFromParent();
+			return;
+		}
+		
 		// This seems like a smart way to do this
 		
 		strGeom = new Geometry("LineString@"+spatial.getName(), str);

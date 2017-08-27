@@ -1,11 +1,13 @@
 package io.github.mistercavespider.lina;
 
+import java.nio.FloatBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.util.BufferUtils;
 
