@@ -152,7 +152,14 @@ public class LineString extends Mesh implements Lina {
 
 	@Override
 	public void setVertexBuffer() {
-		if(vertices.isEmpty()) return;
+		/*
+		 * This must ALWAYS set a buffer,
+		 * else the BIHTree from collision
+		 * will throw annoying errors
+		 * 
+		 * It took me two days to find this
+		 */
+		if(vertices.isEmpty()) setBuffer(Type.Position, 3, new float[] {0,0,0});
 		
 		Vector3f[] arrvertices = new Vector3f[vertices.size()];
 		vertices.toArray(arrvertices);
