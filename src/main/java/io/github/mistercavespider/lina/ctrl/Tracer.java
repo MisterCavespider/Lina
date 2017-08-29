@@ -18,4 +18,5 @@ public interface Tracer {
 	public LineString getLineString();
 	public void setLineString(LineString str);
 	
+	public void reset();
 }

@@ -37,4 +37,9 @@ public class DistanceTracer implements Tracer {
 		this.str = str;
 	}
 
+	@Override
+	public void reset() {
+		
+	}
+
 }

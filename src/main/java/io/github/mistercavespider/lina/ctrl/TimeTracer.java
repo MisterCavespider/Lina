@@ -124,6 +124,10 @@ public class TimeTracer extends AbstractControl implements Tracer {
 	@Override
 	protected void controlRender(RenderManager rm, ViewPort vp) {}
 	
+	public void reset() {
+		str.empty();
+	}
+	
 	public long getUpdateTime() {
 		return updateTime;
 	}
